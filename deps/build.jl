@@ -35,19 +35,15 @@ if libale_detected == false
     _libdir = joinpath(_prefix, "lib")
     provides(BuildProcess,
         (@build_steps begin
-            info("A")
             CreateDirectory(_srcdir)
             CreateDirectory(_libdir)
             @build_steps begin
-                info("B")
                 ChangeDirectory(_srcdir)
                 `rm -rf Arcade-Learning-Environment-0.5.1`
                 `wget http://www.arcadelearningenvironment.org/wp-content/uploads/2015/10/Arcade-Learning-Environment-0.5.1.zip`
                 `unzip Arcade-Learning-Environment-0.5.1.zip`
-                info("B2")
                 FileRule(joinpath(_libdir, "libale_c.so"),
                     @build_steps begin
-                        info("C")
                         ChangeDirectory("$_aledir")
                         `cmake .`
                         `make`
