@@ -80,7 +80,7 @@ getEpisodeFrameNumber(ale::ALEPtr) =
 function getScreen(ale::ALEPtr)
     w = getScreenWidth(ale)
     h = getScreenHeight(ale)
-    screen = Array(Cuchar, w*h) # row-major order
+    screen_data = Array(Cuchar, w*h) # row-major order
     getScreen!(ale, screen_data)
     screen_data
 end
