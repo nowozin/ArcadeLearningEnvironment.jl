@@ -9,6 +9,10 @@ with additional access to game state information and in-game rewards.
 This is useful for learning and benchmarking artificial intelligence agents
 playing computer games.
 
+A higher-level interface on top of this package is available thanks to Tom
+Breloff, at the [AtariAlgos.jl](https://github.com/tbreloff/AtariAlgos.jl)
+repository.
+
 If you use this package for research publications, please cite the following
 paper to acknowledge the work that went into ALE.
 
