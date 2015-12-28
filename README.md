@@ -13,6 +13,8 @@ A higher-level interface on top of this package is available thanks to Tom
 Breloff, at the [AtariAlgos.jl](https://github.com/tbreloff/AtariAlgos.jl)
 repository.
 
+## Citation
+
 If you use this package for research publications, please cite the following
 paper to acknowledge the work that went into ALE.
 
