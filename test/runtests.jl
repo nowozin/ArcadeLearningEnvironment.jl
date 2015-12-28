@@ -1,5 +1,8 @@
 using ArcadeLearningEnvironment
 using Base.Test
 
-# write your own tests here
-@test 1 == 1
+# TODO: find a public domain ROM and test on that
+
+ale = ALE_new()
+ALE_del(ale)
+

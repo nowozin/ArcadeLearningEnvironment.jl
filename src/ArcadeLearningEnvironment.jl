@@ -1,5 +1,7 @@
+
 module ArcadeLearningEnvironment
 
-# package code goes here
+include("aleinterface.jl")
 
-end # module
+end
+
