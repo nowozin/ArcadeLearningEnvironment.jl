@@ -32,19 +32,18 @@ paper to acknowledge the work that went into ALE.
 
 ## Installation
 
-On Linux the package automatically downloads and builds version 0.5.1 of the
-ArcadeLearningEnvironment by issuing the following commands.
+On Mac OS and Linux the package automatically downloads and builds version
+0.5.1 of the ArcadeLearningEnvironment by issuing the following commands.
 
 ```
 Pkg.clone("https://github.com/nowozin/ArcadeLearningEnvironment.jl.git")
 Pkg.build("ArcadeLearningEnvironment")
 ```
 
-On other systems (which I have not tried) you can build the `libale_c.so` or
-`libale_c.dll` file manually and set the `LIBALE_HOME` environment variable to
-the directory containing this file.  Then, the above two commands should work
-as well.  Note that this is untested and any correction or feedback is
-welcome.
+On Windows (which I have not tried yet) you can build the `libale_c.dll` file
+manually and set the `LIBALE_HOME` environment variable to the directory
+containing this file.  Then, the above two commands should work as well.  Note
+that this is untested and any correction or feedback is welcome.
 
 
 ## Example
