@@ -30,7 +30,7 @@ if libale_detected == false
 
     _prefix = joinpath(BinDeps.depsdir(libale_c), "usr")
     _srcdir = joinpath(BinDeps.depsdir(libale_c), "src")
-    _aledir = joinpath(_srcdir, "Arcade-Learning-Environment-0.5.1")
+    _aledir = joinpath(_srcdir, "Arcade-Learning-Environment-0.5.2")
     _cmakedir = joinpath(_aledir, "build")
     _libdir = joinpath(_prefix, "lib")
     provides(BuildProcess,
@@ -39,9 +39,10 @@ if libale_detected == false
             CreateDirectory(_libdir)
             @build_steps begin
                 ChangeDirectory(_srcdir)
-                `rm -rf Arcade-Learning-Environment-0.5.1`
-                `wget http://www.arcadelearningenvironment.org/wp-content/uploads/2015/10/Arcade-Learning-Environment-0.5.1.zip`
-                `unzip Arcade-Learning-Environment-0.5.1.zip`
+                `rm -rf Arcade-Learning-Environment-0.5.2`
+                `rm -rf v0.5.2.zip`
+                `wget https://github.com/mgbellemare/Arcade-Learning-Environment/archive/v0.5.2.zip`
+                `unzip v0.5.2.zip`
                 FileRule(joinpath(_libdir, "libale_c.so"),
                     @build_steps begin
                         ChangeDirectory("$_aledir")
