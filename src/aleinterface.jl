@@ -5,38 +5,38 @@ else
     error("libale_c not properly installed. Please run Pkg.build(\"ArcadeLearningEnvironment\")")
 end
 
-typealias ALEInterface Void
-typealias ALEPtr Ptr{ALEInterface}
-typealias ALEState Void
-typealias ALEStatePtr Ptr{ALEState}
+const ALEInterface = Void
+const ALEPtr = Ptr{ALEInterface}
+const ALEState = Void
+const ALEStatePtr = Ptr{ALEState}
 
 ALE_new() = ccall((:ALE_new, libale_c), ALEPtr, ())
 ALE_del(ale::ALEPtr) = ccall((:ALE_del, libale_c), Void, (ALEPtr,), ale)
 
-function getString(ale::ALEPtr, key::ASCIIString)
+function getString(ale::ALEPtr, key::String)
     res = ccall((:getString, libale_c), Ptr{Cchar}, (ALEPtr, Ptr{Cchar}),
         ale, key)
     bytestring(res)
 end
-getInt(ale::ALEPtr, key::ASCIIString) = ccall((:getInt, libale_c), Cint,
+getInt(ale::ALEPtr, key::String) = ccall((:getInt, libale_c), Cint,
     (ALEPtr, Ptr{Cchar}), ale, key)
-getBool(ale::ALEPtr, key::ASCIIString) = ccall((:getBool, libale_c), Cint,
+getBool(ale::ALEPtr, key::String) = ccall((:getBool, libale_c), Cint,
     (ALEPtr, Ptr{Cchar}), ale, key) > 0
-getFloat(ale::ALEPtr, key::ASCIIString) = ccall((:getFloat, libale_c), Float32,
+getFloat(ale::ALEPtr, key::String) = ccall((:getFloat, libale_c), Float32,
     (ALEPtr, Ptr{Cchar}), ale, key)
 
-setString(ale::ALEPtr, key::ASCIIString, value::ASCIIString) =
+setString(ale::ALEPtr, key::String, value::String) =
     ccall((:setString, libale_c), Void, (ALEPtr, Ptr{Cchar}, Ptr{Cchar}),
         ale, key, value)
-setInt(ale::ALEPtr, key::ASCIIString, value::Cint) = ccall((:setInt, libale_c),
+setInt(ale::ALEPtr, key::String, value::Cint) = ccall((:setInt, libale_c),
     Void, (ALEPtr, Ptr{Cchar}, Cint), ale, key, value)
-setBool(ale::ALEPtr, key::ASCIIString, value::Bool) = ccall((:setBool, libale_c),
+setBool(ale::ALEPtr, key::String, value::Bool) = ccall((:setBool, libale_c),
     Void, (ALEPtr, Ptr{Cchar}, Cint), ale, key, value)
-setFloat(ale::ALEPtr, key::ASCIIString, value::Cfloat) =
+setFloat(ale::ALEPtr, key::String, value::Cfloat) =
     ccall((:setFloat, libale_c), Void, (ALEPtr, Ptr{Cchar}, Cfloat),
         ale, key, value)
 
-loadROM(ale::ALEPtr, rom_file::ASCIIString) = ccall((:loadROM, libale_c), Void,
+loadROM(ale::ALEPtr, rom_file::String) = ccall((:loadROM, libale_c), Void,
     (ALEPtr, Ptr{Cchar}), ale, rom_file)
 
 act(ale::ALEPtr, action::Cint) =
@@ -46,7 +46,7 @@ game_over(ale::ALEPtr) =
 reset_game(ale::ALEPtr) = ccall((:reset_game, libale_c), Void, (ALEPtr,), ale)
 
 function getLegalActionSet(ale::ALEPtr)
-    actions = Array(Cint, 0)
+    actions = Array{Cint}(0)
     getLegalActionSet!(ale, actions)
     actions
 end
@@ -59,7 +59,7 @@ getLegalActionSize(ale::ALEPtr) =
     ccall((:getLegalActionSize, libale_c), Cint, (ALEPtr,), ale)
 
 function getMinimalActionSet(ale::ALEPtr)
-    actions = Array(Cint, 0)
+    actions = Array{Cint}(0)
     getMinimalActionSet!(ale, actions)
     actions
 end
@@ -80,7 +80,7 @@ getEpisodeFrameNumber(ale::ALEPtr) =
 function getScreen(ale::ALEPtr)
     w = getScreenWidth(ale)
     h = getScreenHeight(ale)
-    screen_data = Array(Cuchar, w*h) # row-major order
+    screen_data = Array{Cuchar}(w*h) # row-major order
     getScreen!(ale, screen_data)
     screen_data
 end
@@ -114,12 +114,12 @@ restoreSystemState(ale::ALEPtr, state::ALEStatePtr) =
         ale, state)
 deleteState(state::ALEStatePtr) = ccall((:deleteState, libale_c), Void,
     (ALEStatePtr,), state)
-saveScreenPNG(ale::ALEPtr, filename::ASCIIString) = ccall((:saveScreenPNG, libale_c),
+saveScreenPNG(ale::ALEPtr, filename::String) = ccall((:saveScreenPNG, libale_c),
     Void, (ALEPtr, Ptr{Cchar}), ale, filename)
 
 function encodeState(state::ALEStatePtr)
     len = encodeStateLen(state)
-    buf = Array(Cchar, len)
+    buf = Array{Cchar}(len)
     ccall((:encodeState, libale_c), Void, (ALEStatePtr, Ptr{Cchar}, Cint),
         state, buf, len)
     buf
