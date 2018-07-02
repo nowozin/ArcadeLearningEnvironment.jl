@@ -5,13 +5,13 @@ else
     error("libale_c not properly installed. Please run Pkg.build(\"ArcadeLearningEnvironment\")")
 end
 
-const ALEInterface = Void
+const ALEInterface = Nothing
 const ALEPtr = Ptr{ALEInterface}
-const ALEState = Void
+const ALEState = Nothing
 const ALEStatePtr = Ptr{ALEState}
 
 ALE_new() = ccall((:ALE_new, libale_c), ALEPtr, ())
-ALE_del(ale::ALEPtr) = ccall((:ALE_del, libale_c), Void, (ALEPtr,), ale)
+ALE_del(ale::ALEPtr) = ccall((:ALE_del, libale_c), Nothing, (ALEPtr,), ale)
 
 function getString(ale::ALEPtr, key::String)
     res = ccall((:getString, libale_c), Ptr{Cchar}, (ALEPtr, Ptr{Cchar}),
@@ -26,24 +26,24 @@ getFloat(ale::ALEPtr, key::String) = ccall((:getFloat, libale_c), Float32,
     (ALEPtr, Ptr{Cchar}), ale, key)
 
 setString(ale::ALEPtr, key::String, value::String) =
-    ccall((:setString, libale_c), Void, (ALEPtr, Ptr{Cchar}, Ptr{Cchar}),
+    ccall((:setString, libale_c), Nothing, (ALEPtr, Ptr{Cchar}, Ptr{Cchar}),
         ale, key, value)
 setInt(ale::ALEPtr, key::String, value::Cint) = ccall((:setInt, libale_c),
-    Void, (ALEPtr, Ptr{Cchar}, Cint), ale, key, value)
+    Nothing, (ALEPtr, Ptr{Cchar}, Cint), ale, key, value)
 setBool(ale::ALEPtr, key::String, value::Bool) = ccall((:setBool, libale_c),
-    Void, (ALEPtr, Ptr{Cchar}, Cint), ale, key, value)
+    Nothing, (ALEPtr, Ptr{Cchar}, Cint), ale, key, value)
 setFloat(ale::ALEPtr, key::String, value::Cfloat) =
-    ccall((:setFloat, libale_c), Void, (ALEPtr, Ptr{Cchar}, Cfloat),
+    ccall((:setFloat, libale_c), Nothing, (ALEPtr, Ptr{Cchar}, Cfloat),
         ale, key, value)
 
-loadROM(ale::ALEPtr, rom_file::String) = ccall((:loadROM, libale_c), Void,
+loadROM(ale::ALEPtr, rom_file::String) = ccall((:loadROM, libale_c), Nothing,
     (ALEPtr, Ptr{Cchar}), ale, rom_file)
 
 act(ale::ALEPtr, action::Cint) =
     ccall((:act, libale_c), Cint, (ALEPtr, Cint), ale, action)
 game_over(ale::ALEPtr) =
     ccall((:game_over, libale_c), Cint, (ALEPtr,), ale) > 0
-reset_game(ale::ALEPtr) = ccall((:reset_game, libale_c), Void, (ALEPtr,), ale)
+reset_game(ale::ALEPtr) = ccall((:reset_game, libale_c), Nothing, (ALEPtr,), ale)
 
 function getLegalActionSet(ale::ALEPtr)
     actions = Array{Cint}(0)
@@ -52,7 +52,7 @@ function getLegalActionSet(ale::ALEPtr)
 end
 function getLegalActionSet!(ale::ALEPtr, actions::Vector{Cint})
     resize!(actions, getLegalActionSize(ale))
-    ccall((:getLegalActionSet, libale_c), Void, (ALEPtr, Ptr{Cint}),
+    ccall((:getLegalActionSet, libale_c), Nothing, (ALEPtr, Ptr{Cint}),
         ale, actions)
 end
 getLegalActionSize(ale::ALEPtr) =
@@ -65,7 +65,7 @@ function getMinimalActionSet(ale::ALEPtr)
 end
 function getMinimalActionSet!(ale::ALEPtr, actions::Vector{Cint})
     resize!(actions, getMinimalActionSize(ale))
-    ccall((:getMinimalActionSet, libale_c), Void, (ALEPtr, Ptr{Cint}),
+    ccall((:getMinimalActionSet, libale_c), Nothing, (ALEPtr, Ptr{Cint}),
         ale, actions)
 end
 getMinimalActionSize(ale::ALEPtr) =
@@ -85,9 +85,9 @@ function getScreen(ale::ALEPtr)
     screen_data
 end
 getScreen!(ale::ALEPtr, screen_data::Vector{Cuchar}) =
-    ccall((:getScreen, libale_c), Void, (ALEPtr, Ptr{Cuchar}), ale, screen_data)
+    ccall((:getScreen, libale_c), Nothing, (ALEPtr, Ptr{Cuchar}), ale, screen_data)
 getRAM(ale::ALEPtr, ram::Vector{Cuchar}) =
-    ccall((:getRAM, libale_c), Void, (ALEPtr, Ptr{Cuchar}), ale, ram)
+    ccall((:getRAM, libale_c), Nothing, (ALEPtr, Ptr{Cuchar}), ale, ram)
 getRAMSize(ale::ALEPtr) = ccall((:getRAMSize, libale_c), Cint, (ALEPtr,), ale)
 getScreenWidth(ale::ALEPtr) =
     ccall((:getScreenWidth, libale_c), Cint, (ALEPtr,), ale)
@@ -95,32 +95,32 @@ getScreenHeight(ale::ALEPtr) =
     ccall((:getScreenHeight, libale_c), Cint, (ALEPtr,), ale)
 
 getScreenRGB(ale::ALEPtr, output_buffer::Vector{Cuchar}) =
-    ccall((:getScreenRGB, libale_c), Void, (ALEPtr, Ptr{Cuchar}),
+    ccall((:getScreenRGB, libale_c), Nothing, (ALEPtr, Ptr{Cuchar}),
         ale, output_buffer)
 getScreenGrayscale(ale::ALEPtr, output_buffer::Vector{Cuchar}) =
-    ccall((:getScreenGrayscale, libale_c), Void, (ALEPtr, Ptr{Cuchar}),
+    ccall((:getScreenGrayscale, libale_c), Nothing, (ALEPtr, Ptr{Cuchar}),
         ale, output_buffer)
 
-saveState(ale::ALEPtr) = ccall((:saveState, libale_c), Void, (ALEPtr,), ale)
-loadState(ale::ALEPtr) = ccall((:loadState, libale_c), Void, (ALEPtr,), ale)
+saveState(ale::ALEPtr) = ccall((:saveState, libale_c), Nothing, (ALEPtr,), ale)
+loadState(ale::ALEPtr) = ccall((:loadState, libale_c), Nothing, (ALEPtr,), ale)
 cloneState(ale::ALEPtr) = ccall((:cloneState, libale_c), ALEStatePtr,
     (ALEPtr,), ale)
 restoreState(ale::ALEPtr, state::ALEStatePtr) =
-    ccall((:restoreState, libale_c), Void, (ALEPtr, ALEStatePtr), ale, state)
+    ccall((:restoreState, libale_c), Nothing, (ALEPtr, ALEStatePtr), ale, state)
 cloneSystemState(ale::ALEPtr) = ccall((:cloneSystemState, libale_c),
     ALEStatePtr, (ALEPtr,), ale)
 restoreSystemState(ale::ALEPtr, state::ALEStatePtr) =
-    ccall((:restoreSystemState, libale_c), Void, (ALEPtr, ALEStatePtr),
+    ccall((:restoreSystemState, libale_c), Nothing, (ALEPtr, ALEStatePtr),
         ale, state)
-deleteState(state::ALEStatePtr) = ccall((:deleteState, libale_c), Void,
+deleteState(state::ALEStatePtr) = ccall((:deleteState, libale_c), Nothing,
     (ALEStatePtr,), state)
 saveScreenPNG(ale::ALEPtr, filename::String) = ccall((:saveScreenPNG, libale_c),
-    Void, (ALEPtr, Ptr{Cchar}), ale, filename)
+    Nothing, (ALEPtr, Ptr{Cchar}), ale, filename)
 
 function encodeState(state::ALEStatePtr)
     len = encodeStateLen(state)
     buf = Array{Cchar}(len)
-    ccall((:encodeState, libale_c), Void, (ALEStatePtr, Ptr{Cchar}, Cint),
+    ccall((:encodeState, libale_c), Nothing, (ALEStatePtr, Ptr{Cchar}, Cint),
         state, buf, len)
     buf
 end

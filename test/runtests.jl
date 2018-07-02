@@ -1,5 +1,5 @@
 using ArcadeLearningEnvironment
-using Base.Test
+using Test
 
 # TODO: find a public domain ROM and test on that
 
