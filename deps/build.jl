@@ -1,4 +1,4 @@
-import Compat: @info, @error, LibGit2, Sys.iswindows
+import Compat: @info, @error, Sys.iswindows
 libale_detected = false
 if haskey(ENV, "LIBALE_HOME")
     @info("LIBALE_HOME environment detected: $(ENV["LIBALE_HOME"])")
@@ -13,7 +13,7 @@ if haskey(ENV, "LIBALE_HOME")
     end
 end
 
-import LibGit2: clone
+import Compat.LibGit2: clone
 function getroms(romdir)
     @info("Downloading roms to $romdir")
     tmpdir = mktempdir()
