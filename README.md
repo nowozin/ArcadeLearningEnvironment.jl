@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jbrea/ReinforcementLearning.jl.svg?branch=master)](https://travis-ci.org/jbrea/ArcadeLearningEnvironment.jl)
+[![codecov](https://codecov.io/gh/jbrea/ReinforcementLearning.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/jbrea/ArcadeLearningEnvironment.jl)
 
 # ArcadeLearningEnvironment.jl
 
