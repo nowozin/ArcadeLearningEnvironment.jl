@@ -1,28 +1,37 @@
-
+import Compat: @info, @error, LibGit2, Sys.iswindows
 libale_detected = false
 if haskey(ENV, "LIBALE_HOME")
-    info("LIBALE_HOME environment detected: $(ENV["LIBALE_HOME"])")
-    info("Trying to load existing libale_c...")
+    @info("LIBALE_HOME environment detected: $(ENV["LIBALE_HOME"])")
+    @info("Trying to load existing libale_c...")
     lib = Libdl.find_library(["libale_c.so","libale_c.dll"],
         [joinpath(ENV["LIBALE_HOME"], "ale_python_interface")])
     if isempty(lib) == false
-        info("Existing libalec detected at $lib, skip building...")
+        @info("Existing libalec detected at $lib, skip building...")
         libale_detected = true
     else
-        info("Failed to load existing libalec, trying to build from source...")
+        @info("Failed to load existing libalec, trying to build from source...")
     end
+end
+
+import LibGit2: clone
+function getroms(romdir)
+    @info("Downloading roms to $romdir")
+    tmpdir = mktempdir()
+    clone("https://github.com/openai/atari-py", tmpdir)
+    mv(joinpath(tmpdir, "atari_py", "atari_roms"), romdir)
+    rm(tmpdir, recursive = true, force = true)
 end
 
 using BinDeps
 @BinDeps.setup
 if libale_detected == false
-    if is_windows()
-	info("This package currently does not support Windows.")
-        info("You may want to try using the prebuilt libale_c.dll file from")
-        info("https://github.com/pkulchenko/alecwrap and setting the")
-        info("LIBALE_HOME environment variable to the directory containing")
-        info("the file, then issuing Pkg.build(\"ArcadeLearningEnvironment\")")
-        error("Automatic building of libale_c.dll on Windows is currently not supported yet.")
+    if iswindows()
+	@info("This package currently does not support Windows.")
+        @info("You may want to try using the prebuilt libale_c.dll file from")
+        @info("https://github.com/pkulchenko/alecwrap and setting the")
+        @info("LIBALE_HOME environment variable to the directory containing")
+        @info("the file, then issuing Pkg.build(\"ArcadeLearningEnvironment\")")
+        @error("Automatic building of libale_c.dll on Windows is currently not supported yet.")
     end
 
     libale_c = library_dependency("libale_c",
@@ -54,5 +63,5 @@ if libale_detected == false
             end
         end), libale_c)
     @BinDeps.install Dict(:libale_c => :libale_c)
+    getroms(joinpath(@__DIR__, "roms"))
 end
-

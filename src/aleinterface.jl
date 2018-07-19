@@ -36,8 +36,15 @@ setFloat(ale::ALEPtr, key::String, value::Cfloat) =
     ccall((:setFloat, libale_c), Nothing, (ALEPtr, Ptr{Cchar}, Cfloat),
         ale, key, value)
 
-loadROM(ale::ALEPtr, rom_file::String) = ccall((:loadROM, libale_c), Nothing,
-    (ALEPtr, Ptr{Cchar}), ale, rom_file)
+function loadROM(ale::ALEPtr, rom_file::String) 
+    if isfile(rom_file)
+        ccall((:loadROM, libale_c), Nothing, (ALEPtr, Ptr{Cchar}), ale, rom_file)
+    elseif isfile(joinpath(@__DIR__, "..", "deps", "roms", rom_file * ".bin"))
+        loadROM(ale, joinpath(@__DIR__, "..", "deps", "roms", rom_file * ".bin"))
+    else
+        @error("ROM file $rom_file not found.")
+    end
+end
 
 act(ale::ALEPtr, action::Cint) =
     ccall((:act, libale_c), Cint, (ALEPtr, Cint), ale, action)
@@ -46,7 +53,7 @@ game_over(ale::ALEPtr) =
 reset_game(ale::ALEPtr) = ccall((:reset_game, libale_c), Nothing, (ALEPtr,), ale)
 
 function getLegalActionSet(ale::ALEPtr)
-    actions = Array{Cint}(0)
+    actions = Array{Cint}(undef, 0)
     getLegalActionSet!(ale, actions)
     actions
 end
@@ -59,7 +66,7 @@ getLegalActionSize(ale::ALEPtr) =
     ccall((:getLegalActionSize, libale_c), Cint, (ALEPtr,), ale)
 
 function getMinimalActionSet(ale::ALEPtr)
-    actions = Array{Cint}(0)
+    actions = Array{Cint}(undef, 0)
     getMinimalActionSet!(ale, actions)
     actions
 end
@@ -80,7 +87,7 @@ getEpisodeFrameNumber(ale::ALEPtr) =
 function getScreen(ale::ALEPtr)
     w = getScreenWidth(ale)
     h = getScreenHeight(ale)
-    screen_data = Array{Cuchar}(w*h) # row-major order
+    screen_data = Array{Cuchar}(undef, w*h) # row-major order
     getScreen!(ale, screen_data)
     screen_data
 end
