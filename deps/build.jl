@@ -50,8 +50,7 @@ if libale_detected == false
                 ChangeDirectory(_srcdir)
                 `rm -rf Arcade-Learning-Environment-0.6.0`
                 `rm -rf v0.6.0.zip`
-                `wget
-                https://github.com/mgbellemare/Arcade-Learning-Environment/archive/v0.6.0.zip`
+                `curl -LO https://github.com/mgbellemare/Arcade-Learning-Environment/archive/v0.6.0.zip`
                 `unzip v0.6.0.zip`
                 FileRule(joinpath(_libdir, "libale_c.so"),
                     @build_steps begin
