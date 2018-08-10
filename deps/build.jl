@@ -1,4 +1,5 @@
-import Compat: @info, @error, Sys.iswindows
+import Compat: @info, @error, Sys.iswindows, mv
+using Compat.Libdl
 libale_detected = false
 if haskey(ENV, "LIBALE_HOME")
     @info("LIBALE_HOME environment detected: $(ENV["LIBALE_HOME"])")
