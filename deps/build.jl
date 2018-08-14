@@ -19,6 +19,7 @@ function getroms(romdir)
     @info("Downloading roms to $romdir")
     tmpdir = mktempdir()
     clone("https://github.com/openai/atari-py", tmpdir)
+    GC.gc()
     mv(joinpath(tmpdir, "atari_py", "atari_roms"), romdir, force = true)
     rm(tmpdir, recursive = true, force = true)
 end
