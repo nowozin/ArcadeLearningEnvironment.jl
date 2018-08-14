@@ -1,4 +1,4 @@
-import Compat: @info, @error, Sys.iswindows, mv
+import Compat: @info, @error, Sys.iswindows, mv, GC
 using Compat.Libdl
 libale_detected = false
 if haskey(ENV, "LIBALE_HOME")
