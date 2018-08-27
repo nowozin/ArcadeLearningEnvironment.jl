@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/jbrea/ReinforcementLearning.jl.svg?branch=master)](https://travis-ci.org/jbrea/ArcadeLearningEnvironment.jl)
-[![codecov](https://codecov.io/gh/jbrea/ReinforcementLearning.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/jbrea/ArcadeLearningEnvironment.jl)
+[![Build Status](https://travis-ci.com/JuliaReinforcementLearning/ReinforcementLearning.jl.svg?branch=master)](https://travis-ci.com/JuliaReinforcementLearning/ArcadeLearningEnvironment.jl)
+[![codecov](https://codecov.io/gh/JuliaReinforcementLearning/ReinforcementLearning.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaReinforcementLearning/ArcadeLearningEnvironment.jl)
 
 # ArcadeLearningEnvironment.jl
 
@@ -36,12 +36,6 @@ On Mac OS and Linux the package automatically downloads and builds version
 
 ```julia
 Pkg.add("ArcadeLearningEnvironment")
-```
-
-or by issuing the following commands
-```julia
-Pkg.clone("https://github.com/jbrea/ArcadeLearningEnvironment.jl.git")
-Pkg.build("ArcadeLearningEnvironment")
 ```
 
 or in the package REPL of julia 0.7.0 with
