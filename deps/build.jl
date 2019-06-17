@@ -16,7 +16,7 @@ end
 using BinDeps
 @BinDeps.setup
 if libale_detected == false
-    if is_windows()
+    if Sys.iswindows()
 	info("This package currently does not support Windows.")
         info("You may want to try using the prebuilt libale_c.dll file from")
         info("https://github.com/pkulchenko/alecwrap and setting the")
@@ -30,7 +30,7 @@ if libale_detected == false
 
     _prefix = joinpath(BinDeps.depsdir(libale_c), "usr")
     _srcdir = joinpath(BinDeps.depsdir(libale_c), "src")
-    _aledir = joinpath(_srcdir, "Arcade-Learning-Environment-0.5.2")
+    _aledir = joinpath(_srcdir, "Arcade-Learning-Environment-0.6.0")
     _cmakedir = joinpath(_aledir, "build")
     _libdir = joinpath(_prefix, "lib")
     provides(BuildProcess,
@@ -41,17 +41,18 @@ if libale_detected == false
                 ChangeDirectory(_srcdir)
                 `rm -rf Arcade-Learning-Environment-0.5.2`
                 `rm -rf v0.5.2.zip`
-                `wget https://github.com/mgbellemare/Arcade-Learning-Environment/archive/v0.5.2.zip`
-                `unzip v0.5.2.zip`
+				`rm -rf Arcade-Learning-Environment-0.6.0`
+                `rm -rf v0.6.0.zip`
+                `wget https://github.com/mgbellemare/Arcade-Learning-Environment/archive/v0.6.0.zip`
+                `unzip v0.6.0.zip`
                 FileRule(joinpath(_libdir, "libale_c.so"),
                     @build_steps begin
                         ChangeDirectory("$_aledir")
-                        `cmake .`
-                        `make`
+                        `cmake -DUSE_SDL=ON -DBUILD_EXAMPLES=OFF -DBUILD_CPP_LIB=OFF -DBUILD_CLI=OFF .`
+                        `make -j 4`
                         `cp ale_python_interface/libale_c.so $_libdir`
                     end)
             end
         end), libale_c)
     @BinDeps.install Dict(:libale_c => :libale_c)
 end
-
