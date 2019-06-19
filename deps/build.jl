@@ -48,7 +48,7 @@ if libale_detected == false
                 FileRule(joinpath(_libdir, "libale_c.so"),
                     @build_steps begin
                         ChangeDirectory("$_aledir")
-                        `cmake -DUSE_SDL=ON -DBUILD_EXAMPLES=OFF -DBUILD_CPP_LIB=OFF -DBUILD_CLI=OFF .`
+                        `cmake -DUSE_SDL=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CPP_LIB=OFF -DBUILD_CLI=OFF .`
                         `make -j 4`
                         `cp ale_python_interface/libale_c.so $_libdir`
                     end)
