@@ -46,7 +46,7 @@ game_over(ale::ALEPtr) =
 reset_game(ale::ALEPtr) = ccall((:reset_game, libale_c), Cvoid, (ALEPtr,), ale)
 
 function getLegalActionSet(ale::ALEPtr)
-    actions = Array{Cint}(0)
+    actions = Cint[]
     getLegalActionSet!(ale, actions)
     actions
 end
@@ -59,7 +59,7 @@ getLegalActionSize(ale::ALEPtr) =
     ccall((:getLegalActionSize, libale_c), Cint, (ALEPtr,), ale)
 
 function getMinimalActionSet(ale::ALEPtr)
-    actions = Array{Cint}(0)
+    actions = Cint[]
     getMinimalActionSet!(ale, actions)
     actions
 end
@@ -80,7 +80,7 @@ getEpisodeFrameNumber(ale::ALEPtr) =
 function getScreen(ale::ALEPtr)
     w = getScreenWidth(ale)
     h = getScreenHeight(ale)
-    screen_data = Array{Cuchar}(w*h) # row-major order
+    screen_data = Array{Cuchar}(undef, w*h) # row-major order
     getScreen!(ale, screen_data)
     screen_data
 end
