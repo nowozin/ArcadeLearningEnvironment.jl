@@ -10,6 +10,12 @@ const ALEPtr = Ptr{ALEInterface}
 const ALEState = Cvoid
 const ALEStatePtr = Ptr{ALEState}
 
+const Logger = Dict(
+    :info => 0,
+    :warning => 1,
+    :error => 2
+)
+
 ALE_new() = ccall((:ALE_new, libale_c), ALEPtr, ())
 ALE_del(ale::ALEPtr) = ccall((:ALE_del, libale_c), Cvoid, (ALEPtr,), ale)
 
@@ -129,6 +135,11 @@ encodeStateLen(state::ALEStatePtr) = ccall((:encodeStateLen, libale_c),
 decodeState(buf::Array{Cchar,1}) = ccall((:decodeState, libale_c),
     ALEStatePtr, (Ptr{Cchar}, Cint), buf, length(buf))
 
+function setLoggerMode!(mode::Symbol)
+    @assert mode ∈ keys(Logger) "$mode is unavailable. Please select one of :info, :warning, :error"
+    ccall((:setLoggerMode, libale_c), Cvoid, (Cint,), Logger[mode])
+end
+
 export
     # Types
     ALEInterface,
@@ -174,4 +185,5 @@ export
     saveScreenPNG,
     encodeState,
     encodeStateLen,
-    decodeState
+    decodeState,
+    setLoggerMode!
