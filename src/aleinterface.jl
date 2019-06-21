@@ -163,15 +163,6 @@ Returns the frame number since the last reset.
 getEpisodeFrameNumber(ale::ALEPtr) =
     ccall((:getEpisodeFrameNumber, libale_c), Cint, (ALEPtr,), ale)
 
-function getScreen(ale::ALEPtr)
-    w = getScreenWidth(ale)
-    h = getScreenHeight(ale)
-    screen_data = Array{Cuchar}(undef, w*h) # row-major order
-    getScreen!(ale, screen_data)
-    screen_data
-end
-getScreen!(ale::ALEPtr, screen_data::Vector{Cuchar}) =
-    ccall((:getScreen, libale_c), Cvoid, (ALEPtr, Ptr{Cuchar}), ale, screen_data)
 
 """
 Returns the size of the RAM
@@ -194,14 +185,47 @@ getScreenWidth(ale::ALEPtr) =
     ccall((:getScreenWidth, libale_c), Cint, (ALEPtr,), ale)
 getScreenHeight(ale::ALEPtr) =
     ccall((:getScreenHeight, libale_c), Cint, (ALEPtr,), ale)
-
-getScreenRGB(ale::ALEPtr, output_buffer::Vector{Cuchar}) =
+getScreen!(ale::ALEPtr, screen_data::Vector{Cuchar}) =
+    ccall((:getScreen, libale_c), Cvoid, (ALEPtr, Ptr{Cuchar}), ale, screen_data)
+getScreenRGB!(ale::ALEPtr, output_buffer::Vector{Cuchar}) =
     ccall((:getScreenRGB, libale_c), Cvoid, (ALEPtr, Ptr{Cuchar}),
         ale, output_buffer)
-getScreenGrayscale(ale::ALEPtr, output_buffer::Vector{Cuchar}) =
+getScreenGrayscale!(ale::ALEPtr, output_buffer::Vector{Cuchar}) =
     ccall((:getScreenGrayscale, libale_c), Cvoid, (ALEPtr, Ptr{Cuchar}),
         ale, output_buffer)
 
+"""
+Returns the current game screen.
+"""
+function getScreen(ale::ALEPtr)
+    w = getScreenWidth(ale)
+    h = getScreenHeight(ale)
+    screen_data = Array{Cuchar}(undef, w*h) # row-major order
+    getScreen!(ale, screen_data)
+    screen_data
+end
+
+"""
+Returns the RGB representation of the game screen as a (width * heigth * 3)-element Array{UInt, 1}.
+"""
+function getScreenRGB(ale::ALEPtr)
+    w = getScreenWidth(ale)
+    h = getScreenHeight(ale)
+    screen_data = Array{Cuchar}(undef, w*h*3)
+    getScreenRGB!(ale, screen_data)
+    return screen_data
+end
+
+"""
+Returns the grayscale representation of the screen
+"""
+function getScreenGrayscale(ale::ALEPtr)
+    w = getScreenWidth(ale)
+    h = getScreenHeight(ale)
+    screen_data = Array{Cuchar}(undef, w*h)
+    getScreenGrayscale!(ale, screen_data)
+    return screen_data
+end
 
 """
 Saves the state of the game
