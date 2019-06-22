@@ -6,6 +6,8 @@
 This package is a [Julia](http://julialang.org/) wrapper for the
 [ArcadeLearningEnvironment](https://github.com/mgbellemare/Arcade-Learning-Environment) (ALE).
 
+**This is the maintained fork that is in the official Julia registry**
+
 ALE is a modified emulator for the Atari 2600 that can emulate around 50 games
 with additional access to game state information and in-game rewards.
 This is useful for learning and benchmarking artificial intelligence agents
