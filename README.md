@@ -1,4 +1,8 @@
 
+# OBSOLETED
+
+This package is obsoleted by the newer and updated package at [JuliaReinforcementLearning/ArcadeLearningEnvironment.jl](https://github.com/JuliaReinforcementLearning/ArcadeLearningEnvironment.jl).  Please use the updated package instead of this one.
+
 # ArcadeLearningEnvironment.jl
 
 This package is a [Julia](http://julialang.org/) wrapper for the
