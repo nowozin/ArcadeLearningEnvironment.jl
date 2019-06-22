@@ -1,6 +1,8 @@
 using ArcadeLearningEnvironment
 using Test
 
+setLoggerMode!(:error)
+
 @testset "alien" begin
     ale = ALE_new()
     loadROM(ale, "alien")
