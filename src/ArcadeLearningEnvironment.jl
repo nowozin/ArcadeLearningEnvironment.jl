@@ -48,6 +48,6 @@ export
     encodeState,
     encodeStateLen,
     decodeState,
-    setLoggerMode!
+    setLoggerMode!,
     getROMList
 end
