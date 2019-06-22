@@ -104,7 +104,7 @@ setFloat(ale::ALEPtr, key::String, value::Real) =
 
 Loads the binary of passed. `rom_file` can either be the absolute path to the binary,
 or the name of the ROM that is present in the "deps/roms" directory. Access this list using
-`ArcadeLearningEnvironment.getROMList()`.
+`getROMList()`.
 
 # Examples
 ```julia-repl
