@@ -1,25 +1,55 @@
 using ArcadeLearningEnvironment
-using Compat.Test
+using Test
 
-ale = ALE_new()
-loadROM(ale, "alien")
-actionset = getLegalActionSet(ale)
-minactionset = getMinimalActionSet(ale)
-@test actionset == minactionset
-@test length(actionset) == 18
-for a in actionset
-    act(ale, a)
+@testset "alien" begin
+    ale = ALE_new()
+    loadROM(ale, "alien")
+    actionset = getLegalActionSet(ale)
+    minactionset = getMinimalActionSet(ale)
+    @test actionset == minactionset
+    @test length(actionset) == 18
+    for a in actionset
+        act(ale, a)
+    end
+    @test false == game_over(ale)
+    @test 3 == lives(ale)
+    @test 18 == getFrameNumber(ale)
+    @test 18 == getEpisodeFrameNumber(ale)
+    @test length(getScreen(ale)) == 33600 == getScreenWidth(ale) * getScreenHeight(ale)
+    getScreen(ale)
+    s = zeros(Cuchar, 3*33600)
+    getScreenRGB(ale, s)
+    act(ale, Int32(0))
+    s = zeros(Cuchar, 33600)
+    getScreenGrayscale(ale, s)
+    ALE_del(ale)
 end
-@test false == game_over(ale)
-@test 3 == lives(ale)
-@test 18 == getFrameNumber(ale)
-@test 18 == getEpisodeFrameNumber(ale)
-@test length(getScreen(ale)) == 33600 == getScreenWidth(ale) * getScreenHeight(ale)
-getScreen(ale)
-s = zeros(Cuchar, 3*33600)
-getScreenRGB(ale, s)
-act(ale, Int32(0))
-s = zeros(Cuchar, 33600)
-getScreenGrayscale(ale, s)
-ALE_del(ale)
 
+@testset "all roms" begin
+    roms = readdir(joinpath(dirname(pathof(ArcadeLearningEnvironment)), "..", "deps", "roms"))
+    for rom in roms
+        if rom == "defender.bin"
+            @warn("defender.bin not tested")
+            continue
+        end
+        ale = ALE_new()
+        setBool(ale, "color_averaging", true)
+        setInt(ale, "frame_skip", Int32(4))
+        setFloat(ale, "repeat_action_probability",
+                 Float32(0.))
+        loadROM(ale, string(split(rom, ".")[1]))
+        actionset = getLegalActionSet(ale)
+        reset_game(ale)
+        for i in 1:1000
+            act(ale, rand(actionset))
+            game_over(ale) && reset_game(ale)
+        end
+        width = getScreenWidth(ale)
+        height = getScreenHeight(ale)
+        getScreenGrayscale(ale, Array{Cuchar}(undef, width * height))
+        getScreenRGB(ale, Array{Cuchar}(undef, 3 * width * height))
+        getScreen!(ale, Array{Cuchar}(undef, width * height))
+        @test true
+        ALE_del(ale)
+    end
+end
