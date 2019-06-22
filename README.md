@@ -8,6 +8,8 @@ This package is a [Julia](http://julialang.org/) wrapper for the
 
 **This is the maintained fork that is in the official Julia registry.**
 
+For a higher level access to ALE see [ReinforcementLearningEnvironments](https://github.com/JuliaReinforcementLearning/ReinforcementLearningEnvironments.jl).
+
 ALE is a modified emulator for the Atari 2600 that can emulate around 50 games
 with additional access to game state information and in-game rewards.
 This is useful for learning and benchmarking artificial intelligence agents
