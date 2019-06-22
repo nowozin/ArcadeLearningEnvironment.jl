@@ -17,11 +17,9 @@ using Test
     @test 18 == getEpisodeFrameNumber(ale)
     @test length(getScreen(ale)) == 33600 == getScreenWidth(ale) * getScreenHeight(ale)
     getScreen(ale)
-    s = zeros(Cuchar, 3*33600)
-    getScreenRGB(ale, s)
+    s = getScreenRGB(ale)
     act(ale, Int32(0))
-    s = zeros(Cuchar, 33600)
-    getScreenGrayscale(ale, s)
+    s = getScreenGrayscale(ale)
     ALE_del(ale)
 end
 
@@ -46,9 +44,9 @@ end
         end
         width = getScreenWidth(ale)
         height = getScreenHeight(ale)
-        getScreenGrayscale(ale, Array{Cuchar}(undef, width * height))
-        getScreenRGB(ale, Array{Cuchar}(undef, 3 * width * height))
-        getScreen!(ale, Array{Cuchar}(undef, width * height))
+        getScreenGrayscale(ale)
+        getScreenRGB(ale)
+        getScreen(ale)
         @test true
         ALE_del(ale)
     end
