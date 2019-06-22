@@ -4,11 +4,18 @@ os:
   - linux
   - osx
 julia:
-  - 0.4
+  - 1.0
+  - 1.1
   - nightly
 notifications:
   email: false
+matrix:
+  allow_failures:
+  - julia: nightly
 # uncomment the following lines to override the default test script
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 #  - julia -e 'Pkg.clone(pwd()); Pkg.build("ArcadeLearningEnvironment"); Pkg.test("ArcadeLearningEnvironment"; coverage=true)'
+after_success:
+  # push coverage results to Codecov
+- julia -e 'cd(Pkg.dir("ArcadeLearningEnvironment")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
