@@ -103,7 +103,8 @@ setFloat(ale::ALEPtr, key::String, value::Real) =
     loadROM(ale_instance::ALEPtr, rom_file::String)
 
 Loads the binary of passed. `rom_file` can either be the absolute path to the binary,
-or the name of the ROM that is present in the "deps/roms" directory.
+or the name of the ROM that is present in the "deps/roms" directory. Access this list using
+`ArcadeLearningEnvironment.getROMList()`.
 
 # Examples
 ```julia-repl
@@ -150,6 +151,37 @@ function loadROM(ale::ALEPtr, rom_file::String)
     else
         @error("ROM file $rom_file not found.")
     end
+end
+
+"""
+    getROMList()
+
+Returns an array of names of ROMs available. These ROMS can be loaded by simply passing
+their name to the [`loadROM`](@ref) function, as opposed to passing their full path.
+
+# Example
+```julia-repl
+julia> getROMList()
+63-element Array{String,1}:
+ "adventure"
+ "air_raid"
+ "alien"
+ "amidar"
+ "assault"
+ "asterix"
+ ⋮
+ "venture"
+ "video_pinball"
+ "wizard_of_wor"
+ "yars_revenge"
+ "zaxxon"
+```
+"""
+function getROMList()
+    (_, _, files), _ = iterate(walkdir(eval(@__DIR__) * "/../deps/roms"))
+    files = files[endswith.(files, ".bin")]
+    file_names = [file_name[1:end-4] for file_name in files]
+    file_names
 end
 
 """
