@@ -5,7 +5,7 @@ else
     error("libale_c not properly installed. Please run Pkg.build(\"ArcadeLearningEnvironment\")")
 end
 
-const ALEInterface = Cvoid  # Using Cvoid inplace of Nothing because is more meaningful
+const ALEInterface = Cvoid  # Using Cvoid inplace of Nothing because it is better suited to the context
 const ALEPtr = Ptr{ALEInterface}
 const ALEState = Cvoid
 const ALEStatePtr = Ptr{ALEState}
