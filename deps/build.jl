@@ -27,13 +27,13 @@ end
 using BinDeps
 @BinDeps.setup
 if libale_detected == false
-    if iswindows()
-	@info("This package currently does not support Windows.")
-        @info("You may want to try using the prebuilt libale_c.dll file from")
-        @info("https://github.com/pkulchenko/alecwrap and setting the")
-        @info("LIBALE_HOME environment variable to the directory containing")
-        @info("the file, then issuing Pkg.build(\"ArcadeLearningEnvironment\")")
-        @error("Automatic building of libale_c.dll on Windows is currently not supported yet.")
+    if Sys.iswindows()
+	info("This package currently does not support Windows.")
+        info("You may want to try using the prebuilt libale_c.dll file from")
+        info("https://github.com/pkulchenko/alecwrap and setting the")
+        info("LIBALE_HOME environment variable to the directory containing")
+        info("the file, then issuing Pkg.build(\"ArcadeLearningEnvironment\")")
+        error("Automatic building of libale_c.dll on Windows is currently not supported yet.")
     end
 
     libale_c = library_dependency("libale_c",
@@ -50,15 +50,17 @@ if libale_detected == false
             CreateDirectory(_libdir)
             @build_steps begin
                 ChangeDirectory(_srcdir)
-                `rm -rf Arcade-Learning-Environment-0.6.0`
+                `rm -rf Arcade-Learning-Environment-0.5.2`
+                `rm -rf v0.5.2.zip`
+				`rm -rf Arcade-Learning-Environment-0.6.0`
                 `rm -rf v0.6.0.zip`
                 `curl -LO https://github.com/mgbellemare/Arcade-Learning-Environment/archive/v0.6.0.zip`
                 `unzip v0.6.0.zip`
                 FileRule(joinpath(_libdir, "libale_c.so"),
                     @build_steps begin
                         ChangeDirectory("$_aledir")
-                        `cmake .`
-                        `make`
+                        `cmake -DUSE_SDL=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CPP_LIB=OFF -DBUILD_CLI=OFF .`
+                        `make -j 4`
                         `cp ale_python_interface/libale_c.so $_libdir`
                     end)
             end
