@@ -398,8 +398,8 @@ repeated calls to restoreState() in the stochastic controls settinig will not le
 
 See also: [`restoreSystemState`](@ref)
 """
-restoreState(ale::ALEPtr, state::ALEStatePtr) =
-    ccall((:restoreState, libale_c), Cvoid, (ALEPtr, ALEStatePtr), ale, state)
+restoreState(ale::ALEPtr, state_ref::ALEStatePtr) =
+    ccall((:restoreState, libale_c), Cvoid, (ALEPtr, ALEStatePtr), ale, state_ref)
 
 """
     cloneSystemState(ale_instance::ALEPtr)
@@ -415,9 +415,9 @@ cloneSystemState(ale::ALEPtr) = ccall((:cloneSystemState, libale_c),
 
 Reverse operation of [`cloneSystemState`](@ref).
 """
-restoreSystemState(ale::ALEPtr, state::ALEStatePtr) =
+restoreSystemState(ale::ALEPtr, state_ref::ALEStatePtr) =
     ccall((:restoreSystemState, libale_c), Cvoid, (ALEPtr, ALEStatePtr),
-        ale, state)
+        ale, state_ref)
 deleteState(state::ALEStatePtr) = ccall((:deleteState, libale_c), Cvoid,
     (ALEStatePtr,), state)
 
@@ -436,13 +436,19 @@ saveScreenPNG(ale::ALEPtr, filename::String) = ccall((:saveScreenPNG, libale_c),
 
 function encodeState(state::ALEStatePtr)
     len = encodeStateLen(state)
-    buf = Array{Cchar}(len)
+    buf = Array{Cchar}(undef, len)
+    encodeState!(state, buf)
+end
+
+function encodeState!(state::ALEStatePtr, buf::Array{Cchar})
     ccall((:encodeState, libale_c), Cvoid, (ALEStatePtr, Ptr{Cchar}, Cint),
-        state, buf, len)
+        state, buf, length(buf))
     buf
 end
+
 encodeStateLen(state::ALEStatePtr) = ccall((:encodeStateLen, libale_c),
     Cint, (ALEStatePtr,), state)
+
 decodeState(buf::Array{Cchar,1}) = ccall((:decodeState, libale_c),
     ALEStatePtr, (Ptr{Cchar}, Cint), buf, length(buf))
 
