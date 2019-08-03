@@ -26,3 +26,8 @@ Manifest.toml
 
 # For macOS users...
 .DS_Store
+
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

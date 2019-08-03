@@ -14,11 +14,13 @@ if haskey(ENV, "LIBALE_HOME")
     end
 end
 
-import Compat.LibGit2: clone
+import Compat.LibGit2: clone, checkout!, GitRepo
 function getroms(romdir)
     @info("Downloading roms to $romdir")
     tmpdir = mktempdir()
     clone("https://github.com/openai/atari-py", tmpdir)
+    repo = GitRepo(tmpdir)
+    checkout!(repo, "03676470b32711dfa77186712ff9f74f3afdc512")
     GC.gc()
     mv(joinpath(tmpdir, "atari_py", "atari_roms"), romdir, force = true)
     rm(tmpdir, recursive = true, force = true)
