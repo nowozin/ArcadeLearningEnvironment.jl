@@ -10,7 +10,7 @@ This package is a [Julia](http://julialang.org/) wrapper for the
 
 For a higher level access to ALE see [ReinforcementLearningEnvironments](https://github.com/JuliaReinforcementLearning/ReinforcementLearningEnvironments.jl).
 
-ALE is a modified emulator for the Atari 2600 that can emulate around 50 games
+ALE is a modified emulator for the Atari 2600 that can emulate around 100 games
 with additional access to game state information and in-game rewards.
 This is useful for learning and benchmarking artificial intelligence agents
 playing computer games.
@@ -35,22 +35,11 @@ paper to acknowledge the work that went into ALE.
 
 ## Installation
 
-On Mac OS and Linux the package automatically downloads and builds version
-0.6.0 of the ArcadeLearningEnvironment by adding it in julia 0.6 with
+The package automatically downloads version 0.6.1 of the ArcadeLearningEnvironment
 
 ```julia
 Pkg.add("ArcadeLearningEnvironment")
 ```
-
-or in the package REPL of julia 0.7.0 with
-```julia
-add ArcadeLearningEnvironment
-```
-
-On Windows (which I have not tried yet) you can build the `libale_c.dll` file
-manually and set the `LIBALE_HOME` environment variable to the directory
-containing this file.  Then, the above two commands should work as well.  Note
-that this is untested and any correction or feedback is welcome.
 
 
 ## Example
