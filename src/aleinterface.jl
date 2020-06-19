@@ -1,10 +1,3 @@
-
-if isfile(joinpath(dirname(dirname(@__FILE__)), "deps", "deps.jl"))
-    include("../deps/deps.jl")
-else
-    error("libale_c not properly installed. Please run Pkg.build(\"ArcadeLearningEnvironment\")")
-end
-
 const ALEInterface = Cvoid  # Using Cvoid inplace of Nothing because it is better suited to the context
 const ALEPtr = Ptr{ALEInterface}
 const ALEState = Cvoid
@@ -110,7 +103,7 @@ or the name of the ROM that is present in the "deps/roms" directory. Access this
 ```julia-repl
 julia> loadROM(ale, "pong")
 Game console created:
-  ROM file:  /Users/juliauser/.julia/dev/ArcadeLearningEnvironment/src/../deps/roms/pong.bin
+  ROM file:  /Users/juliauser/.julia/artifacts/4af00c03a4bcddb3ce20c2d96c3d09527100767/ROMS/pong.bin
   Cart Name: Video Olympics (1978) (Atari)
   Cart MD5:  60e0ea3cbe0913d39803477945e9e5ec
   Display Format:  AUTO-DETECT ==> NTSC
@@ -146,8 +139,8 @@ Random seed is 0
 function loadROM(ale::ALEPtr, rom_file::String)
     if isfile(rom_file)
         ccall((:loadROM, libale_c), Nothing, (ALEPtr, Ptr{Cchar}), ale, rom_file)
-    elseif isfile(joinpath(@__DIR__, "..", "deps", "roms", rom_file * ".bin"))
-        loadROM(ale, joinpath(@__DIR__, "..", "deps", "roms", rom_file * ".bin"))
+    elseif isfile(joinpath(ROM_PATH, rom_file * ".bin"))
+        loadROM(ale, joinpath(ROM_PATH, rom_file * ".bin"))
     else
         @error("ROM file $rom_file not found.")
     end
@@ -162,7 +155,7 @@ their name to the [`loadROM`](@ref) function, as opposed to passing their full p
 # Example
 ```julia-repl
 julia> getROMList()
-63-element Array{String,1}:
+103-element Array{String,1}:
  "adventure"
  "air_raid"
  "alien"
@@ -178,7 +171,7 @@ julia> getROMList()
 ```
 """
 function getROMList()
-    (_, _, files), _ = iterate(walkdir(eval(@__DIR__) * "/../deps/roms"))
+    files = readdir(ROM_PATH)
     files = files[endswith.(files, ".bin")]
     file_names = [file_name[1:end-4] for file_name in files]
     file_names

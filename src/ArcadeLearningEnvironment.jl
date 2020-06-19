@@ -1,9 +1,13 @@
-
 module ArcadeLearningEnvironment
+using ArcadeLearningEnvironment_jll
+using Pkg.Artifacts
 
-using Compat
-import Compat: @error
 include("aleinterface.jl")
+
+ROM_PATH = ""
+function __init__()
+    global ROM_PATH = joinpath(artifact"atari_roms", "ROMS")
+end
 
 export
     # Types
@@ -50,4 +54,5 @@ export
     decodeState,
     setLoggerMode!,
     getROMList
+
 end
