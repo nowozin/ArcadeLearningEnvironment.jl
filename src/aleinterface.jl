@@ -155,7 +155,7 @@ their name to the [`loadROM`](@ref) function, as opposed to passing their full p
 # Example
 ```julia-repl
 julia> getROMList()
-103-element Array{String,1}:
+74-element Array{String,1}:
  "adventure"
  "air_raid"
  "alien"

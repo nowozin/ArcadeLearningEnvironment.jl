@@ -33,7 +33,7 @@ artifact_toml = joinpath(@__DIR__, "..", "Artifacts.toml")
 rom_hash = artifact_hash("atari_roms", artifact_toml)
 if rom_hash == nothing || !artifact_exists(rom_hash)
     rom_hash = create_artifact() do artifact_dir
-        download("https://raw.githubusercontent.com/mgbellemare/Arcade-Learning-Environment/master/md5.txt", joinpath(artifact_dir, "md5.txt"))
+        download("https://raw.githubusercontent.com/mgbellemare/Arcade-Learning-Environment/v0.6.1/md5.txt", joinpath(artifact_dir, "md5.txt"))
         download("http://www.atarimania.com/roms/Roms.rar", joinpath(artifact_dir, "Roms.rar"))
         cd(artifact_dir)
         run(`7z e $(joinpath(artifact_dir, "Roms.rar"))`)

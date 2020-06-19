@@ -26,10 +26,10 @@ setLoggerMode!(:error)
 end
 
 @testset "all roms" begin
-    roms = readdir(joinpath(dirname(pathof(ArcadeLearningEnvironment)), "..", "deps", "roms"))
+    roms = getROMList()
     for rom in roms
-        if rom == "defender.bin"
-            @warn("defender.bin not tested")
+        if rom in ["pacman", "surround"]
+            @warn "Skipping $rom"
             continue
         end
         ale = ALE_new()
@@ -37,7 +37,8 @@ end
         setInt(ale, "frame_skip", Int32(4))
         setFloat(ale, "repeat_action_probability",
                  Float32(0.))
-        loadROM(ale, string(split(rom, ".")[1]))
+        @info "Testing $rom"
+        loadROM(ale, rom)
         actionset = getLegalActionSet(ale)
         reset_game(ale)
 
