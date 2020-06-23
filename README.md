@@ -36,6 +36,7 @@ paper to acknowledge the work that went into ALE.
 ## Installation
 
 The package automatically downloads version 0.6.1 of the ArcadeLearningEnvironment
+and the ROMS from www.atarimania.com.
 
 ```julia
 Pkg.add("ArcadeLearningEnvironment")
@@ -47,6 +48,7 @@ Pkg.add("ArcadeLearningEnvironment")
 ```julia
 using ArcadeLearningEnvironment
 
+getROMList()
 
 episodes = 50
 

@@ -1,4 +1,5 @@
 using MD5
+using LibArchive_jll
 using Pkg.Artifacts
 
 function import_roms(dir)
@@ -36,8 +37,10 @@ if rom_hash == nothing || !artifact_exists(rom_hash)
         download("https://raw.githubusercontent.com/mgbellemare/Arcade-Learning-Environment/v0.6.1/md5.txt", joinpath(artifact_dir, "md5.txt"))
         download("http://www.atarimania.com/roms/Roms.rar", joinpath(artifact_dir, "Roms.rar"))
         cd(artifact_dir)
-        run(`7z e $(joinpath(artifact_dir, "Roms.rar"))`)
-        run(`7z x $(joinpath(artifact_dir, "ROMS.zip"))`)
+        bsdtar() do exe
+            run(`$exe -xf $(joinpath(artifact_dir, "Roms.rar"))`)
+            run(`$exe -xf $(joinpath(artifact_dir, "ROMS.zip"))`)
+        end
         rm(joinpath(artifact_dir, "Roms.rar"))
         rm(joinpath(artifact_dir, "ROMS.zip"))
         rm(joinpath(artifact_dir, "HC ROMS.zip"))
