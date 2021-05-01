@@ -1,0 +1,6 @@
+[atari_roms]
+git-tree-sha1 = "9b7774e2f34581dc08d0979a8172c6d157be1f2d"
+
+    [[atari_roms.download]]
+    url = "https://github.com/JuliaReinforcementLearning/ArcadeLearningEnvironment.jl/releases/download/v0.2.3/ROMS.tar.gz"
+    sha256 = "20478b70c071b156435782c60cc02bb44fc4c7b54f356510e82bce1793e5471e"

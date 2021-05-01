@@ -4,14 +4,9 @@ using Pkg.Artifacts
 
 include("aleinterface.jl")
 
-ROM_PATH = ""
-function __init__()
-    global ROM_PATH = joinpath(artifact"atari_roms", "ROMS")
-end
+ROM_PATH = artifact"atari_roms"
 
-export
-    # Types
-    ALEInterface,
+export ALEInterface,
     ALEPtr,
     # Functions
     ALE_new,

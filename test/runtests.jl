@@ -11,8 +11,8 @@ setLoggerMode!(:error)
     @test actionset == minactionset
     @test length(actionset) == 18
     for a in actionset
-        act(ale, a)
-    end
+    act(ale, a)
+end
     @test false == game_over(ale)
     @test 3 == lives(ale)
     @test 18 == getFrameNumber(ale)
@@ -28,50 +28,49 @@ end
 @testset "all roms" begin
     roms = getROMList()
     for rom in roms
-        if rom in ["pacman", "surround"]
-            @warn "Skipping $rom"
-            continue
-        end
-        ale = ALE_new()
-        setBool(ale, "color_averaging", true)
-        setInt(ale, "frame_skip", Int32(4))
-        setFloat(ale, "repeat_action_probability",
-                 Float32(0.))
-        @info "Testing $rom"
-        loadROM(ale, rom)
-        actionset = getLegalActionSet(ale)
-        reset_game(ale)
-
-        for i in 1:1000
-            act(ale, rand(actionset))
-            game_over(ale) && reset_game(ale)
-        end
-
-        width = getScreenWidth(ale)
-        height = getScreenHeight(ale)
-        getScreenGrayscale(ale)
-        getScreenRGB(ale)
-        getScreen(ale)
-
-        @test true
-
-        state_ref = cloneState(ale)
-        pre_restore_state = encodeState(state_ref)
-        deleteState(state_ref)
-        state_ref = decodeState(pre_restore_state)
-        restoreState(ale, state_ref)
-        post_restore_state = ale |> cloneState |> encodeState
-        @test pre_restore_state == post_restore_state
-        deleteState(state_ref)
-
-        state_ref = cloneSystemState(ale)
-        pre_restore_state = encodeState(state_ref)
-        state_ref = decodeState(pre_restore_state)
-        restoreSystemState(ale, state_ref)
-        post_restore_state = ale |> cloneSystemState |> encodeState
-        @test post_restore_state == pre_restore_state
-        deleteState(state_ref)
-
-        ALE_del(ale)
+    if rom in ["pacman", "surround"]
+        @warn "Skipping $rom"
+        continue
     end
+    ale = ALE_new()
+    setBool(ale, "color_averaging", true)
+    setInt(ale, "frame_skip", Int32(4))
+    setFloat(ale, "repeat_action_probability", Float32(0.))
+    @info "Testing $rom"
+    loadROM(ale, rom)
+    actionset = getLegalActionSet(ale)
+    reset_game(ale)
+
+    for i in 1:1000
+        act(ale, rand(actionset))
+        game_over(ale) && reset_game(ale)
+    end
+
+    width = getScreenWidth(ale)
+    height = getScreenHeight(ale)
+    getScreenGrayscale(ale)
+    getScreenRGB(ale)
+    getScreen(ale)
+
+    @test true
+
+    state_ref = cloneState(ale)
+    pre_restore_state = encodeState(state_ref)
+    deleteState(state_ref)
+    state_ref = decodeState(pre_restore_state)
+    restoreState(ale, state_ref)
+    post_restore_state = ale |> cloneState |> encodeState
+    @test pre_restore_state == post_restore_state
+    deleteState(state_ref)
+
+    state_ref = cloneSystemState(ale)
+    pre_restore_state = encodeState(state_ref)
+    state_ref = decodeState(pre_restore_state)
+    restoreSystemState(ale, state_ref)
+    post_restore_state = ale |> cloneSystemState |> encodeState
+    @test post_restore_state == pre_restore_state
+    deleteState(state_ref)
+
+    ALE_del(ale)
+end
 end
